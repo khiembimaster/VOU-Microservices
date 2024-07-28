@@ -5,15 +5,27 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{66720183-DF3E-4B5E-A5A4-BFF564B51CC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj", "{541B2128-0B56-47B1-85C8-BF7061DC0D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj", "{541B2128-0B56-47B1-85C8-BF7061DC0D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Messaging", "BuildingBlocks\BuildingBlocks.Messaging\BuildingBlocks.Messaging.csproj", "{CCDD9FE7-7336-42FA-BFCF-26A8D7B098DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Messaging", "BuildingBlocks\BuildingBlocks.Messaging\BuildingBlocks.Messaging.csproj", "{CCDD9FE7-7336-42FA-BFCF-26A8D7B098DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{C7A1C464-638A-4DE5-B408-35B9763A17A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{D7C405AD-33C7-4CF1-87EF-7AEB93717D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.API", "Services\Inventory\Inventory.API\Inventory.API.csproj", "{71BBF53F-4358-4104-8B52-83FA97183A85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.API", "Services\Inventory\Inventory.API\Inventory.API.csproj", "{71BBF53F-4358-4104-8B52-83FA97183A85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealtimeService", "RealtimeService", "{1C7A1580-2EEC-4B64-95B4-F799BCDB7CA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealtimeService.SignalR", "Services\RealtimeService\RealtimeService.SignalR\RealtimeService.SignalR.csproj", "{876E6358-D09C-498B-BB71-2C22451BBF37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuizGameService", "QuizGameService", "{C1F44EB1-9549-4B36-9583-B2537E399530}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizGame.Presentation", "Services\QuizGame\QuizGame.Presentation\QuizGame.Presentation.csproj", "{7ABAC8A7-E1D5-4985-A540-D180D0C913AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizGame.Application", "Services\QuizGame\QuizGame.Infrastructure\QuizGame.Application.csproj", "{4E93C427-6786-4E4D-B69A-0F51DDA62C21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizGame.Domain", "Services\QuizGame\QuizGame.Domain\QuizGame.Domain.csproj", "{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +45,22 @@ Global
 		{71BBF53F-4358-4104-8B52-83FA97183A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71BBF53F-4358-4104-8B52-83FA97183A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71BBF53F-4358-4104-8B52-83FA97183A85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876E6358-D09C-498B-BB71-2C22451BBF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876E6358-D09C-498B-BB71-2C22451BBF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876E6358-D09C-498B-BB71-2C22451BBF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876E6358-D09C-498B-BB71-2C22451BBF37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ABAC8A7-E1D5-4985-A540-D180D0C913AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ABAC8A7-E1D5-4985-A540-D180D0C913AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ABAC8A7-E1D5-4985-A540-D180D0C913AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ABAC8A7-E1D5-4985-A540-D180D0C913AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E93C427-6786-4E4D-B69A-0F51DDA62C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E93C427-6786-4E4D-B69A-0F51DDA62C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E93C427-6786-4E4D-B69A-0F51DDA62C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E93C427-6786-4E4D-B69A-0F51DDA62C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +70,12 @@ Global
 		{CCDD9FE7-7336-42FA-BFCF-26A8D7B098DE} = {66720183-DF3E-4B5E-A5A4-BFF564B51CC4}
 		{D7C405AD-33C7-4CF1-87EF-7AEB93717D29} = {C7A1C464-638A-4DE5-B408-35B9763A17A7}
 		{71BBF53F-4358-4104-8B52-83FA97183A85} = {D7C405AD-33C7-4CF1-87EF-7AEB93717D29}
+		{1C7A1580-2EEC-4B64-95B4-F799BCDB7CA1} = {C7A1C464-638A-4DE5-B408-35B9763A17A7}
+		{876E6358-D09C-498B-BB71-2C22451BBF37} = {1C7A1580-2EEC-4B64-95B4-F799BCDB7CA1}
+		{C1F44EB1-9549-4B36-9583-B2537E399530} = {C7A1C464-638A-4DE5-B408-35B9763A17A7}
+		{7ABAC8A7-E1D5-4985-A540-D180D0C913AE} = {C1F44EB1-9549-4B36-9583-B2537E399530}
+		{4E93C427-6786-4E4D-B69A-0F51DDA62C21} = {C1F44EB1-9549-4B36-9583-B2537E399530}
+		{EAEE57CF-2E12-4B0B-AFBA-567D9CDE6339} = {C1F44EB1-9549-4B36-9583-B2537E399530}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8076569-E7AE-418B-97C7-C901A2730222}
