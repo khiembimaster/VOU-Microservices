@@ -1,4 +1,4 @@
-﻿namespace QuizGame.Domain.Models
+﻿namespace QuizGame.Domain.ValueObjects
 {
     public record AnswerId
     {

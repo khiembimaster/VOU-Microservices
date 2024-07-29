@@ -4,7 +4,7 @@ using MediatR;
 
 namespace QuizGame.Application.QuizGame.EventHandlers.Integration
 {
-    public class QuizGameRegisteredEventHandler
+    public class QuizCreatedEventHandler
         (ISender sender)
         : IConsumer<QuizGameRegisteredEvent>
     {

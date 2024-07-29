@@ -11,7 +11,7 @@
         public Difficulty Difficulty { get; private set; } = default;
         public int TimeLimit { get; private set; } = default;
         
-        public static Question Create(QuestionId questionId, GameId gameId, string description, int timeLimit)
+        public static Question Create(QuestionId questionId, QuizId gameId, string description, int timeLimit)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(description);
             ArgumentOutOfRangeException.ThrowIfLessThan(timeLimit, 10); 

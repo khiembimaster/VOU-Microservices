@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="QuizGame\Commands\" />
+    <Folder Include="QuizGame\Commands\CreateQuiz\" />
+    <Folder Include="QuizGame\Commands\UpdateQuiz\" />
     <Folder Include="QuizGame\EventHandlers\Domain\" />
     <Folder Include="QuizGame\Queries\" />
   </ItemGroup>

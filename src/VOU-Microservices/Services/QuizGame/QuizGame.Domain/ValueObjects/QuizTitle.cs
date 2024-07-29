@@ -1,16 +1,16 @@
 ﻿namespace QuizGame.Domain.ValueObjects
 {
-    public record GameTitle
+    public record QuizTitle
     {
         private const int DefaultLength = 5;
         public string Value { get; }
-        private GameTitle(string value) => Value = value;
-        public static GameTitle Of(string value)
+        private QuizTitle(string value) => Value = value;
+        public static QuizTitle Of(string value)
         {
             ArgumentException.ThrowIfNullOrEmpty(value);
             ArgumentOutOfRangeException.ThrowIfNotEqual(value.Length, DefaultLength);
 
-            return new GameTitle(value);
+            return new QuizTitle(value);
         }
     }
 }

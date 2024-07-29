@@ -1,6 +1,6 @@
 ﻿namespace QuizGame.Domain.Enums
 {
-    public enum GameStatus
+    public enum QuizStatus
     {
         NotStarted = 1,
         InProgress = 2,
