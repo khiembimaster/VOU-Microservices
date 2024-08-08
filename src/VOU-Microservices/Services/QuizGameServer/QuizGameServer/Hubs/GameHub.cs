@@ -1,35 +1,27 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using QuizGame.Domain;
+using QuizGame.Api.Grains;
+using QuizGame.Common.Message;
 
 namespace QuizGame.Api.Hubs;
 
-public class GameHub : Hub
+public class GameHub(IGrainFactory grainFactory) : Hub
 {
     public override async Task OnConnectedAsync()
     {
-        await Clients.All.SendAsync("ReceiveMessage", $"{Context.ConnectionId} has joined");
+        //await Clients.All.SendAsync("ReceiveMessage", $"{Context.ConnectionId} has joined");
     }
-    // Method to notify clients of a new question
-    public async Task SendQuestion(Guid gameId, Question question)
+    public async Task JoinGame(JoinGameRequest request)
     {
-        await Clients.Group(gameId.ToString()).SendAsync("ReceiveQuestion", question);
-    }
-
-    // Method to update clients with the current leaderboard
-    public async Task UpdateLeaderboard(Leaderboard leaderboard)
-    {
-        await Clients.All.SendAsync("ReceiveLeaderboard", leaderboard);
+        await Groups.AddToGroupAsync(Context.ConnectionId, request.Code);
+        // add player to game grain
+        
+        var gameGrain = grainFactory.GetGrain<IGameGrain>(request.Code);
+        await gameGrain.AddPlayer(request.PlayerId);
     }
 
-    // Method to update clients with player scores
-    public async Task UpdatePlayerScore(Guid playerId, int newScore)
+    public async Task SubmitAnswer(string gameCode, Guid player, int score)
     {
-        await Clients.All.SendAsync("ReceivePlayerScore", playerId, newScore);
-    }
-
-    // Method to notify clients of AI chat messages
-    public async Task SendAiMessage(string message)
-    {
-        await Clients.All.SendAsync("ReceiveAiMessage", message);
+        var gameGrain = grainFactory.GetGrain<IGameGrain>(gameCode);
+        await gameGrain.UpdateLeaderboard(score, player);
     }
 }

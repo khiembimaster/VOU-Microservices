@@ -1,4 +1,4 @@
-﻿namespace QuizGame.Domain;
+﻿namespace QuizGame.Common;
 
 [GenerateSerializer]
 public class Leaderboard

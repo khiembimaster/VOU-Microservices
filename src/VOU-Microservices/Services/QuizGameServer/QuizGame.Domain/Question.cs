@@ -1,8 +1,8 @@
-﻿namespace QuizGame.Domain;
+﻿namespace QuizGame.Common;
 
 [GenerateSerializer]
 public record Question(
-    int QuestionId, 
+    string gameCode,
     string QuestionText, 
     List<string> Choices, 
     string CorrectAnswer, 

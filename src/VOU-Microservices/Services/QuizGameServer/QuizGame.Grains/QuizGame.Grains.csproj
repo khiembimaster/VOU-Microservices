@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Orleans.Runtime" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Sdk" Version="8.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuizGame.Domain\QuizGame.Domain.csproj" />
+    <ProjectReference Include="..\QuizGame.Domain\QuizGame.Common.csproj" />
   </ItemGroup>
 
 </Project>

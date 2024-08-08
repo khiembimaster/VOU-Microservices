@@ -1,4 +1,4 @@
-﻿using QuizGame.Domain;
+﻿using QuizGame.Common;
 
 namespace QuizGame.Api.Grains;
 
