@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,15 +23,54 @@ namespace userapi.Controllers
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signinManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly IMessageProducer _messageProducer;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signinManager, ILogger<AccountController> logger)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signinManager, ILogger<AccountController> logger, IMessageProducer messageProducer)
         {
             _userManager = userManager;
             // _brandManager = brandManager;
             _tokenService = tokenService;
             _signinManager = signinManager;
             _logger = logger;
+            _messageProducer = messageProducer;
         }
+
+        // [HttpPost("login")]
+        // public async Task<IActionResult> Login(LoginDto loginDto)
+        // {
+        //     var client = new HttpClient();
+        //     if (!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+
+        //     var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
+
+        //     if (user == null) return Unauthorized("Invalid username!");
+
+        //     if (user.UserStatus != "Available")
+        //     {
+        //         return Ok("Account is not active.");
+        //     }
+
+        //     var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+        //     if (!result.Succeeded) return Unauthorized("Username not found or Password is incorrect");
+
+        //     var roles = await _userManager.GetRolesAsync(user);
+        //     var Tokenn = _tokenService.CreateToken(user);
+        //     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Tokenn);
+
+        //     return Ok(
+        //         new NewUserDto
+        //         {
+        //             UserName = user.UserName,
+        //             Email = user.Email,
+        //             UserStatus = user.UserStatus,
+        //             Token = Tokenn,
+        //             Roles = roles,
+        //         }
+        //     );
+
+        // }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
@@ -52,6 +92,33 @@ namespace userapi.Controllers
             if (!result.Succeeded) return Unauthorized("Username not found or Password is incorrect");
 
             var roles = await _userManager.GetRolesAsync(user);
+            var token = _tokenService.CreateToken(user);
+
+            // Tạo một đối tượng HttpClient
+            using (var client = new HttpClient())
+            {
+                // Thiết lập header Authorization với token
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                // In thông tin của headers ra console
+                Console.WriteLine("Headers:");
+                foreach (var header in client.DefaultRequestHeaders)
+                {
+                    Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
+                }
+
+                // Thực hiện một yêu cầu đến microservice khác, ví dụ như một yêu cầu GET
+                // var response = await client.GetAsync("http://localhost:5285/userapi/account/register");
+
+                // if (!response.IsSuccessStatusCode)
+                // {
+                //     // Xử lý lỗi nếu cần
+                //     return StatusCode((int)response.StatusCode, "Error accessing other microservice.");
+                // }
+
+                // Lấy nội dung từ response nếu cần
+                // var responseContent = await response.Content.ReadAsStringAsync();
+            }
 
             return Ok(
                 new NewUserDto
@@ -59,11 +126,12 @@ namespace userapi.Controllers
                     UserName = user.UserName,
                     Email = user.Email,
                     UserStatus = user.UserStatus,
-                    Token = _tokenService.CreateToken(user),
+                    Token = token,
                     Roles = roles
                 }
             );
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
@@ -90,6 +158,7 @@ namespace userapi.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(user, "User");
                     if (roleResult.Succeeded)
                     {
+                        // _messageProducer.SendingMessage($"User has created at {DateTime.Now}");
                         return Ok(
                             new NewUserDto
                             {
@@ -276,7 +345,7 @@ namespace userapi.Controllers
 
 
         [HttpDelete("delete/{username}")]
-        [Authorize(Policy = "RequireUserRole")]
+        // [Authorize(Policy = "RequireUserRole")]
         public async Task<IActionResult> Delete(string username)
         {
             try
@@ -290,7 +359,18 @@ namespace userapi.Controllers
                 var result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
-                    return Ok(new { Message = "User deleted successfully" });
+                    try
+                    {
+                        _messageProducer.SendingMessage(new { UserDeleted = username, Timestamp = DateTime.Now });
+                        return Ok("quai ca chuong");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log lỗi hoặc xử lý lỗi nếu cần
+                        Console.WriteLine($"Error sending message: {ex.Message}");
+                        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                        return StatusCode(500, new { Message = "Error sending message", Details = ex.Message });
+                    }
                 }
                 else
                 {
@@ -306,6 +386,7 @@ namespace userapi.Controllers
                 return StatusCode(500, e);
             }
         }
+
     }
     // public class AppBrandManager : UserManager<AppBrand>
     // {

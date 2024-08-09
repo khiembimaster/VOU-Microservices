@@ -142,3 +142,5 @@ C:\Users\Admin\UserManager\userapi\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Wo
 C:\Users\Admin\UserManager\userapi\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Admin\UserManager\userapi\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Admin\UserManager\userapi\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\UserManager\userapi\obj\Debug\net8.0\userapi.sourcelink.json
+C:\Users\Admin\UserManager\userapi\bin\Debug\net8.0\RabbitMQ.Client.dll
