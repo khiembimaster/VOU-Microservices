@@ -1,10 +1,13 @@
-using Orleans.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using QuizGame.Api.Grains;
 using QuizGame.Api.Hubs;
 using QuizGame.Api.Workers;
 using QuizGame.Common;
-using System.Diagnostics;
 using System.Net;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,56 @@ builder.WebHost.UseKestrel((ctx, kestrelOptions) =>
 
 builder.Services.AddHostedService<HubListUpdater>();
 builder.Services.AddSignalR();
+
+builder.Services.AddAuthentication(options =>
+{
+    // Identity made Cookie authentication the default.
+    // However, we want JWT Bearer Auth to be the default.
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    // Configure the Authority to the expected value for
+    // the authentication provider. This ensures the token
+    // is appropriately validated.
+    options.Authority = "Authority URL"; // TODO: Update URL
+
+    // We have to hook the OnMessageReceived event in order to
+    // allow the JWT authentication handler to read the access
+    // token from the query string when a WebSocket or 
+    // Server-Sent Events request comes in.
+
+    // Sending the access token in the query string is required when using WebSockets or ServerSentEvents
+    // due to a limitation in Browser APIs. We restrict it to only calls to the
+    // SignalR hub in this code.
+    // See https://docs.microsoft.com/aspnet/core/signalr/security#access-token-logging
+    // for more information about security considerations when using
+    // the query string to transmit the access token.
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            // If the request is for our hub...
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/hubs/game-hub")))
+            {
+                // Read the token out of the query string
+                context.Token = accessToken;    
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+// Change to use Name as the user identifier for SignalR
+// WARNING: This requires that the source of your JWT token 
+// ensures that the Name claim is unique!
+// If the Name claim isn't unique, users could receive messages 
+// intended for a different user!
+builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
 var app = builder.Build();
 
@@ -65,6 +118,9 @@ app.MapGet("/start/{gameCode}", async (string gameCode, IGrainFactory grainFacto
     await game.CreateGame(questions);
 });
 
-app.MapHub<GameHub>("/game-hub");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapHub<GameHub>("/hubs/game-hub");
 
 app.Run();

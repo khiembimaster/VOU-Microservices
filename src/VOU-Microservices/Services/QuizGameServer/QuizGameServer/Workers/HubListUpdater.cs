@@ -43,7 +43,7 @@ internal sealed class HubListUpdater : BackgroundService
             {
                 await hubListGrain.AddHub(localSiloAddress, selfReference);
             }
-            catch (Exception exception) when (!stoppingToken.IsCancellationRequested)
+            catch (OrleansException exception) when (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogError(exception, "Error polling location hub list");
             }

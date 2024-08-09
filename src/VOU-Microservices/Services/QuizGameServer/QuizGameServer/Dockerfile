@@ -9,17 +9,20 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Services/QuizGameServer/QuizGameServer/QuizGameServer.csproj", "Services/QuizGameServer/QuizGameServer/"]
-RUN dotnet restore "./Services/QuizGameServer/QuizGameServer/QuizGameServer.csproj"
+COPY ["Services/QuizGameServer/QuizGameServer/QuizGame.Api.csproj", "Services/QuizGameServer/QuizGameServer/"]
+COPY ["BuildingBlocks/BuildingBlocks.Messaging/BuildingBlocks.Messaging.csproj", "BuildingBlocks/BuildingBlocks.Messaging/"]
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
+COPY ["Services/QuizGameServer/QuizGame.Domain/QuizGame.Common.csproj", "Services/QuizGameServer/QuizGame.Domain/"]
+RUN dotnet restore "./Services/QuizGameServer/QuizGameServer/QuizGame.Api.csproj"
 COPY . .
 WORKDIR "/src/Services/QuizGameServer/QuizGameServer"
-RUN dotnet build "./QuizGameServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./QuizGame.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./QuizGameServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./QuizGame.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "QuizGameServer.dll"]
+ENTRYPOINT ["dotnet", "QuizGame.Api.dll"]

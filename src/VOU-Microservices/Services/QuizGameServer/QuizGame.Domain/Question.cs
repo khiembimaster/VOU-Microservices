@@ -7,5 +7,8 @@ public record Question(
     List<string> Choices, 
     string CorrectAnswer, 
     int Point, 
-    int TimeLimit);
+    int TimeLimit)
+{
+    public bool IsCorrect(string answer) => CorrectAnswer.Equals(answer);
+}
 
